@@ -1,5 +1,5 @@
 import time
-class TemperatureSensor:
+class AirPressureSensor:
     serviceURL = ''
     pushDataToServer = 1
     pushIntervalInSeconds = 2
@@ -8,10 +8,10 @@ class TemperatureSensor:
         #self.pushIntervalInSeconds = jsonObject['pushIntervalInSeconds']
         #self.pushDataToServer = jsonObject['pushDataToServer']
         self.serviceURL = host+jsonObject['uri']
-        print('TemperatureSensor constructed ')
+        print('AirPressueSensor constructed ')
 
     def pushDataToServer(self):
         while (True):
             time.sleep(self.pushIntervalInSeconds)
-            print('TemperatureSensor pushDataToServer')
+            print('AirPressueSensor pushDataToServer')
             print('')

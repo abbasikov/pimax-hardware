@@ -1,11 +1,17 @@
 import time
 class SmokeSensor:
-    delayInSeconds = 3
-    def __init__(self):
-        print('SmokeSensor constructed')
+    serviceURL = ''
+    pushDataToServer = 1
+    pushIntervalInSeconds = 2
 
-    def startPinging(self):
+    def __init__(self, host, jsonObject):
+        #self.pushIntervalInSeconds = jsonObject['pushIntervalInSeconds']
+        #self.pushDataToServer = jsonObject['pushDataToServer']
+        self.serviceURL = host+jsonObject['uri']
+        print('SmokeSensor constructed ')
+
+    def pushDataToServer(self):
         while (True):
-            time.sleep(self.delayInSeconds)
-            print('SmokeSensor pinging')
+            time.sleep(self.pushIntervalInSeconds)
+            print('SmokeSensor pushDataToServer')
             print('')

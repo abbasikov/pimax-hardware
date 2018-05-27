@@ -3,29 +3,28 @@ import threading
 import json
 from sensors.temperature.TemperatureSensor import *
 from sensors.smoke.SmokeSensor import *
-from sensors.airpressure.AirPressure import  *
+from sensors.airpressure.AirPressureSensor import  *
 from sensors.humidity.HumiditySensor import *
-
-
-tempSensor = TemperatureSensor()
-smokeSensor = SmokeSensor()
-airpressureSensor = AirPressureSensor()
-humiditySensor = HumiditySensor()
-
 configServerUrl = "https://pimax-hardware-config.herokuapp.com/config"
-myResponse = requests.get(configServerUrl)
-print(myResponse.text)
-json_data = json.loads(myResponse.text)
-print(json_data['config']['sensors'])
-print('done')
+
+config = requests.get(configServerUrl)
+print(config.text)
+json_data = json.loads(config.text)
+print(json_data)
+print('config done')
+
+tempSensor = TemperatureSensor(json_data['config']['host'],json_data['config']['sensors']['temperature'])
+smokeSensor = SmokeSensor(json_data['config']['host'],json_data['config']['sensors']['smoke'])
+airpressureSensor = AirPressureSensor(json_data['config']['host'],json_data['config']['sensors']['airPressure'])
+humiditySensor = HumiditySensor(json_data['config']['host'],json_data['config']['sensors']['humidity'])
 
 
 if __name__ == "__main__":
     # creating threads
-    tempThread = threading.Thread(target=tempSensor.startPinging)
-    smokeThread = threading.Thread(target=smokeSensor.startPinging)
-    airpressureThread = threading.Thread(target=airpressureSensor.startPinging)
-    humidityThread = threading.Thread(target=humiditySensor.startPinging)
+    tempThread = threading.Thread(target=tempSensor.pushDataToServer)
+    smokeThread = threading.Thread(target=smokeSensor.pushDataToServer)
+    airpressureThread = threading.Thread(target=airpressureSensor.pushDataToServer)
+    humidityThread = threading.Thread(target=humiditySensor.pushDataToServer)
 
     # starting all threads
     tempThread.start()
@@ -37,6 +36,6 @@ if __name__ == "__main__":
     #t1.join()
 
     # both threads completely executed
-    print("Done!")
+    print("Sensors started")
 
 
