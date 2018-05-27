@@ -1,5 +1,6 @@
 import requests
 import threading
+import json
 from sensors.temperature.TemperatureSensor import *
 from sensors.smoke.SmokeSensor import *
 from sensors.airpressure.AirPressure import  *
@@ -10,6 +11,14 @@ tempSensor = TemperatureSensor()
 smokeSensor = SmokeSensor()
 airpressureSensor = AirPressureSensor()
 humiditySensor = HumiditySensor()
+
+configServerUrl = "https://pimax-hardware-config.herokuapp.com/config"
+myResponse = requests.get(configServerUrl)
+print(myResponse.text)
+json_data = json.loads(myResponse.text)
+print(json_data['config']['sensors'])
+print('done')
+
 
 if __name__ == "__main__":
     # creating threads
